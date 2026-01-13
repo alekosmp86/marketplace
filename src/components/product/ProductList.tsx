@@ -1,25 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductRow } from "./ProductRow";
 import { Banknote } from "lucide-react";
-
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-};
-
-const PRODUCTS: Product[] = [
-  { id: 1, name: "Banana", price: 30 },
-  { id: 2, name: "Apple", price: 40 },
-  { id: 3, name: "Potato", price: 25 },
-  { id: 4, name: "Tomato", price: 35 },
-  { id: 5, name: "Onion", price: 20 },
-];
+import { Product } from "@/app/api/products/models/Product";
 
 export function ProductList() {
   const [total, setTotal] = useState(0);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await fetch("/api/products");
+      const { data } = await response.json();
+      setProducts(data);
+    };
+    fetchProducts();
+  }, []);
 
   const handleSale = () => {
     setTotal(0);
@@ -37,7 +34,7 @@ export function ProductList() {
 
       {/* PRODUCTS */}
       <div className='flex-1 overflow-y-auto max-h-[calc(100vh-15rem)]'>
-        {PRODUCTS.map((p) => (
+        {products.map((p) => (
           <ProductRow
             key={p.id}
             name={p.name}
