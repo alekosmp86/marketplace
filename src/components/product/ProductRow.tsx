@@ -12,7 +12,6 @@ export function ProductRow({ name, price, onAdd }: ProductRowProps) {
   const handleAdd = () => {
     if (weight === 0) return;
     onAdd(Number(weight) * price);
-    setWeight(0);
   };
 
   return (

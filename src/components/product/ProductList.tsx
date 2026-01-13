@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ProductRow } from "./ProductRow";
+import { Banknote } from "lucide-react";
 
 type Product = {
   id: number;
@@ -19,6 +20,12 @@ const PRODUCTS: Product[] = [
 
 export function ProductList() {
   const [total, setTotal] = useState(0);
+
+  const handleSale = () => {
+    setTotal(0);
+    /** TODO: save sale */
+    /** TODO: reload products ordering by most sold */
+  };
 
   return (
     <div className='flex flex-col bg-neutral-50'>
@@ -46,8 +53,11 @@ export function ProductList() {
           QUICK SALE
         </button>
 
-        <button className='flex-1 py-3 bg-primary-500 text-white rounded-lg text-sm font-semibold'>
-          CHARGE
+        <button
+          className='flex-1 flex items-center justify-center gap-2 py-3 border border-neutral-300 rounded-lg text-sm font-semibold bg-primary-500 text-white active:bg-primary-600'
+          onClick={handleSale}
+        >
+          <Banknote className='w-6 h-6' /> VENTA
         </button>
       </div>
     </div>
