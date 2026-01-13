@@ -1,38 +1,53 @@
+import { useState } from "react";
+
 type ProductRowProps = {
   name: string;
   price: number;
-  onAdd: () => void;
+  onAdd: (amount: number) => void;
 };
 
 export function ProductRow({ name, price, onAdd }: ProductRowProps) {
+  const [weight, setWeight] = useState<string | number>(0);
+
+  const handleAdd = () => {
+    if (weight === 0) return;
+    onAdd(Number(weight) * price);
+    setWeight(0);
+  };
+
   return (
-    <button
-      onClick={onAdd}
-      className='
-        w-full flex items-center justify-between
-        px-4 py-4 text-left
-        bg-white
-        border-b border-neutral-200
-        active:bg-neutral-100
-      '
-    >
-      <span className='text-base font-medium text-neutral-900'>{name}</span>
+    <div className='bg-white border-b border-neutral-200 px-4 py-3'>
+      <div className='flex items-center justify-between'>
+        <span className='font-medium text-neutral-900'>{name}</span>
+        <div className='flex items-center gap-2'>
+          <input
+            type='number'
+            step='0.01'
+            min='0'
+            value={weight}
+            onFocus={() => {
+              if (weight === 0) setWeight("");
+            }}
+            onBlur={() => {
+              if (weight === "") setWeight(0);
+            }}
+            onChange={(e) =>
+              setWeight(e.target.value === "" ? "" : Number(e.target.value))
+            }
+            className='w-24 px-2 py-1 border border-neutral-300 rounded-md text-sm'
+          />
+          <span className='text-sm text-neutral-600'>${price} / kg</span>
+        </div>
+      </div>
 
-      <span className='flex items-center gap-3'>
-        <span className='text-sm text-neutral-600'>${price}</span>
-
-        <span
-          className='
-          flex items-center justify-center
-          w-7 h-7
-          rounded-full
-          bg-accent-500 text-white
-          text-lg font-bold
-        '
+      <div className='mt-2 flex items-center justify-end gap-2'>
+        <button
+          onClick={handleAdd}
+          className='px-3 py-1 rounded-md bg-accent-500 text-white text-sm font-semibold active:bg-primary-600'
         >
-          +
-        </span>
-      </span>
-    </button>
+          Add
+        </button>
+      </div>
+    </div>
   );
 }
