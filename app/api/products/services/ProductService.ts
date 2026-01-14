@@ -10,4 +10,20 @@ export class ProductService {
       },
     });
   }
+
+  static async addProduct(name: string, price: number) {
+    return await prisma.product.create({
+      data: {
+        name,
+        price,
+      },
+    });
+  }
+
+  static async updateProduct(id: string, name: string, price: number) {
+    await prisma.product.update({
+      where: { id },
+      data: { name, price },
+    });
+  }
 }
