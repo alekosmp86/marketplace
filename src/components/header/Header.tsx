@@ -4,6 +4,7 @@ import { BadgeDollarSign, Home, LayoutDashboard, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import HeaderNavItemMobile from "./HeaderNavItemMobile";
 import { usePathname } from "next/navigation";
+import { DateUtils } from "@/src/lib/utils/date";
 
 const HeaderItems = [
   { id: 1, label: "Inicio", url: "/", icon: Home },
@@ -18,13 +19,8 @@ export function Header() {
 
   useEffect(() => {
     const update = () => {
-      const now = new Date();
-      setTime(
-        now.toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        })
-      );
+      const date = new DateUtils().now();
+      setTime(date.time);
     };
 
     update();
