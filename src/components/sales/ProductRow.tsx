@@ -1,5 +1,5 @@
 import { Product } from "@/app/api/(business)/products/models/Product";
-import { SaleItem } from "@/app/api/sales/models/SaleItem";
+import { SaleItem } from "@/app/api/(business)/sales/models/SaleItem";
 import { useState, useEffect } from "react";
 
 type ProductRowProps = {
