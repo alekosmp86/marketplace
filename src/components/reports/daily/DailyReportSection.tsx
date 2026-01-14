@@ -10,6 +10,7 @@ import SummaryCardPrice from "./SummaryCardPrice";
 
 export default function DailyReportSection() {
   const businessTime = new DateUtils().now();
+  const [loading, setLoading] = useState(true);
   const [reportData, setReportData] = useState<DailyReport | null>(null);
 
   useEffect(() => {
@@ -24,6 +25,8 @@ export default function DailyReportSection() {
       if (message === RequestStatus.SUCCESS) {
         setReportData(data);
       }
+
+      setLoading(false);
     };
 
     obtainDailyReport();
@@ -31,8 +34,15 @@ export default function DailyReportSection() {
 
   return (
     <>
-      {reportData ? (
-        <div className='flex flex-col gap-2 bg-neutral-50'>
+      {loading ? (
+        <div className='flex h-screen flex-col gap-2 bg-neutral-50'>
+          <SectionHeader title='Reporte diario' />
+          <span className='text-xs text-neutral-500 ml-4'>
+            Cargando reporte...
+          </span>
+        </div>
+      ) : reportData ? (
+        <div className='flex h-screen flex-col gap-2 bg-neutral-50'>
           {/* HEADER */}
           <SectionHeader title='Reporte diario' />
           <span className='text-xs text-neutral-500 ml-4'>
@@ -79,7 +89,7 @@ export default function DailyReportSection() {
           </div>
         </div>
       ) : (
-        <div className='flex flex-col gap-2 bg-neutral-50'>
+        <div className='flex h-screen flex-col gap-2 bg-neutral-50'>
           <SectionHeader title='Reporte diario' />
           <span className='text-xs text-neutral-500 ml-4'>
             No hay reportes disponibles

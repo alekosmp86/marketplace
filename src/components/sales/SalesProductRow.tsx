@@ -8,7 +8,7 @@ type ProductRowProps = {
   resetTrigger: number;
 };
 
-export function ProductRow({ product, onAdd, resetTrigger }: ProductRowProps) {
+export function SalesProductRow({ product, onAdd, resetTrigger }: ProductRowProps) {
   const [weight, setWeight] = useState<string | number>(0);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export function ProductRow({ product, onAdd, resetTrigger }: ProductRowProps) {
           onChange={(e) =>
             setWeight(e.target.value === "" ? "" : Number(e.target.value))
           }
-          className='w-full px-2 py-1 border border-neutral-300 rounded-md text-sm text-right'
+          className='w-full px-2 py-1 border border-neutral-300 text-primary-700 rounded-md text-sm text-right'
         />
 
         {/* Price */}

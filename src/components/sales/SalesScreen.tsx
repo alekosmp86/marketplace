@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ProductRow } from "./ProductRow";
+import { SalesProductRow } from "./SalesProductRow";
 import { Banknote } from "lucide-react";
 import { useProducts } from "../../lib/hooks/useProducts";
 import { SaleItem } from "@/app/api/(business)/sales/models/SaleItem";
@@ -48,7 +48,7 @@ export function SalesScreen() {
       {/* PRODUCTS */}
       <div className='overflow-y-auto h-[calc(100vh-15rem)]'>
         {products.map((p) => (
-          <ProductRow
+          <SalesProductRow
             key={p.id}
             product={p}
             onAdd={(item) => handleAddItem(item)}
