@@ -14,6 +14,7 @@ export function ProductSection() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "market-id": localStorage.getItem("market-id")!,
       },
       body: JSON.stringify({ name, price }),
     });

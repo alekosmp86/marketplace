@@ -1,4 +1,4 @@
-import { RequestStatus } from "../../types/RequestStatus";
+import { RequestStatus } from "../../../types/RequestStatus";
 import { DailyReportService } from "./services/DailyReportService";
 import { NextResponse } from "next/server";
 

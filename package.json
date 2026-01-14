@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm run register-market && next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "register-market": "tsx src/tasks/RegisterMarket.tsx"
   },
   "dependencies": {
     "@prisma/client": "^6.19.2",
@@ -24,6 +25,7 @@
     "eslint-config-next": "16.1.1",
     "prisma": "^6.19.2",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

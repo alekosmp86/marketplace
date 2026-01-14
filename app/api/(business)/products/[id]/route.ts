@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import { ProductService } from "../services/ProductService";
-import { RequestStatus } from "../../types/RequestStatus";
+import { RequestStatus } from "../../../types/RequestStatus";
 
 export const PUT = async (
   req: NextRequest,

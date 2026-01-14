@@ -1,6 +1,6 @@
 "use client";
 
-import { DailyReport } from "@/app/api/reports/daily/models/DailyReport";
+import { DailyReport } from "@/app/api/(business)/reports/daily/models/DailyReport";
 import { RequestStatus } from "@/app/api/types/RequestStatus";
 import { DateUtils } from "@/src/lib/utils/date";
 import { useEffect, useState } from "react";
@@ -11,7 +11,11 @@ export default function DailyReportSection() {
 
   useEffect(() => {
     const obtainDailyReport = async () => {
-      const response = await fetch("/api/reports/daily");
+      const response = await fetch("/api/reports/daily", {
+        headers: {
+          "market-id": localStorage.getItem("market-id")!,
+        },
+      });
       const { message, data } = await response.json();
 
       if (message === RequestStatus.SUCCESS) {
@@ -42,7 +46,7 @@ export default function DailyReportSection() {
         </div>
 
         <div className='rounded-lg bg-white border border-neutral-200 p-4'>
-          <span className='text-xs text-neutral-500'>Total de ventas</span>
+          <span className='text-xs text-neutral-500'>Ganancias</span>
           <div className='text-2xl font-bold text-primary-700'>
             $ {reportData?.totalAmount}
           </div>
@@ -51,13 +55,13 @@ export default function DailyReportSection() {
 
       {/* PRODUCTS SUMMARY */}
       <div className='rounded-lg bg-white border border-neutral-200'>
-        <div className='px-4 py-2 border-b border-neutral-200'>
+        <div className='px-4 py-2 border-b border-neutral-200 bg-neutral-200'>
           <span className='text-sm font-semibold text-neutral-800'>
             Ventas por producto
           </span>
         </div>
 
-        <div className='divide-y divide-neutral-200'>
+        <div className='divide-y divide-neutral-200 overflow-y-auto h-[50vh]'>
           {reportData?.products.map((p) => (
             <div
               key={p.productId}

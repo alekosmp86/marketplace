@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { DateUtils } from "@/src/lib/utils/date";
 
 const HeaderItems = [
-  { id: 1, label: "Inicio", url: "/", icon: Home },
+  { id: 1, label: "Punto de venta", url: "/", icon: Home },
   { id: 2, label: "Resumen", url: "/reports/daily", icon: BadgeDollarSign },
   { id: 3, label: "Gestión", url: "/management", icon: LayoutDashboard },
 ];

@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { RequestStatus } from "../types/RequestStatus";
+import { RequestStatus } from "../../types/RequestStatus";
 import { ProductService } from "./services/ProductService";
 
 export const GET = async () => {
@@ -11,16 +11,13 @@ export const GET = async () => {
     );
   } catch (error) {
     console.error(error);
-    return Response.json(
-      { message: RequestStatus.ERROR },
-      { status: 500 }
-    );
+    return Response.json({ message: RequestStatus.ERROR }, { status: 500 });
   }
 };
 
 export const POST = async (req: NextRequest) => {
   try {
-    const {name, price} = await req.json();
+    const { name, price } = await req.json();
     const product = await ProductService.addProduct(name, price);
     return Response.json(
       { message: RequestStatus.SUCCESS, data: product },
@@ -28,10 +25,6 @@ export const POST = async (req: NextRequest) => {
     );
   } catch (error) {
     console.error(error);
-    return Response.json(
-      { message: RequestStatus.ERROR },
-      { status: 500 }
-    );
+    return Response.json({ message: RequestStatus.ERROR }, { status: 500 });
   }
 };
-

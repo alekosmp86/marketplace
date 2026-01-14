@@ -1,4 +1,4 @@
-import { Product } from "@/app/api/products/models/Product";
+import { Product } from "@/app/api/(business)/products/models/Product";
 import { SaleItem } from "@/app/api/sales/models/SaleItem";
 import { useState, useEffect } from "react";
 

@@ -7,12 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Market {
+  id        String     @id @default(cuid())
+  name      String
+  products  Product[]
+  sales     Sale[]
+  saleItems SaleItem[]
+
+  @@unique([name])
+}
+
 model Product {
   id    String @id @default(cuid())
   name  String
   price Float
 
+  market   Market @relation(fields: [marketId], references: [id])
+  marketId String
+
   items SaleItem[]
+
+  @@unique([name])
 }
 
 model Sale {
@@ -20,11 +35,17 @@ model Sale {
   total     Float
   createdAt String //YYYY-MM-DD
 
+  market   Market @relation(fields: [marketId], references: [id])
+  marketId String
+
   items SaleItem[]
 }
 
 model SaleItem {
   id String @id @default(cuid())
+
+  market   Market @relation(fields: [marketId], references: [id])
+  marketId String
 
   sale   Sale   @relation(fields: [saleId], references: [id])
   saleId String

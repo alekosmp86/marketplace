@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ProductRow } from "./ProductRow";
 import { Banknote } from "lucide-react";
 import { useProducts } from "../../lib/hooks/useProducts";
-import { SaleItem } from "@/app/api/sales/models/SaleItem";
+import { SaleItem } from "@/app/api/(business)/sales/models/SaleItem";
 import { RequestStatus } from "@/app/api/types/RequestStatus";
 
 export function SalesScreen() {
@@ -23,6 +23,7 @@ export function SalesScreen() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "market-id": localStorage.getItem("market-id")!,
       },
       body: JSON.stringify({ items }),
     });
@@ -45,15 +46,15 @@ export function SalesScreen() {
       </div>
 
       {/* PRODUCTS */}
-      <div className="overflow-y-auto h-[calc(100vh-15rem)]">
-      {products.map((p) => (
-        <ProductRow
-          key={p.id}
-          product={p}
-          onAdd={(item) => handleAddItem(item)}
-          resetTrigger={resetTrigger}
-        />
-      ))}
+      <div className='overflow-y-auto h-[calc(100vh-15rem)]'>
+        {products.map((p) => (
+          <ProductRow
+            key={p.id}
+            product={p}
+            onAdd={(item) => handleAddItem(item)}
+            resetTrigger={resetTrigger}
+          />
+        ))}
       </div>
 
       {/* ACTIONS */}

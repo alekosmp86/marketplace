@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Product } from "@/app/api/products/models/Product";
+import { Product } from "@/app/api/(business)/products/models/Product";
 import { RequestStatus } from "@/app/api/types/RequestStatus";
 
 export function useProducts() {
@@ -12,7 +12,11 @@ export function useProducts() {
   async function fetchProducts() {
     try {
       setLoading(true);
-      const res = await fetch("/api/products");
+      const res = await fetch("/api/products", {
+        headers: {
+          "market-id": localStorage.getItem("market-id")!,
+        },
+      });
       const { message, data } = await res.json();
 
       if (message === RequestStatus.SUCCESS) {
@@ -26,6 +30,7 @@ export function useProducts() {
   }
 
   useEffect(() => {
+    localStorage.setItem("market-id", "cmkeciuke0000fwwngi8v4hrh");
     fetchProducts();
   }, []);
 

@@ -1,6 +1,6 @@
-import { RequestStatus } from "../types/RequestStatus";
 import { SalesService } from "./services/SalesService";
 import { SaleItem } from "./models/SaleItem";
+import { RequestStatus } from "../../types/RequestStatus";
 
 export const POST = async (req: Request) => {
   try {
