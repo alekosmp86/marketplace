@@ -5,15 +5,9 @@ import AddProductActionable from "./AddProductActionable";
 import { RequestStatus } from "@/app/api/types/RequestStatus";
 import SectionHeader from "../../shared/SectionHeader";
 import { X } from "lucide-react";
-import { useDebounce } from "@/src/lib/hooks/useDebounce";
-import { useState } from "react";
 
 export function ProductSection() {
   const { products, setProducts } = useProducts();
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const debouncedName = useDebounce(name, 500);
-  const debouncedPrice = useDebounce(price, 500);
 
   async function addProduct(name: string, price: number) {
     const response = await fetch("/api/products", {

@@ -19,7 +19,7 @@ export function useProducts() {
         setProducts(data);
       }
     } catch (err) {
-      setError("Could not load products");
+      setError(err as string);
     } finally {
       setLoading(false);
     }
