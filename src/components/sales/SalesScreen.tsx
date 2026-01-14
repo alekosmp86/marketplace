@@ -45,6 +45,7 @@ export function SalesScreen() {
       </div>
 
       {/* PRODUCTS */}
+      <div className="overflow-y-auto h-[calc(100vh-15rem)]">
       {products.map((p) => (
         <ProductRow
           key={p.id}
@@ -53,6 +54,7 @@ export function SalesScreen() {
           resetTrigger={resetTrigger}
         />
       ))}
+      </div>
 
       {/* ACTIONS */}
       <div className='flex w-full gap-2 p-3 bg-neutral-100 border-t border-neutral-200 absolute bottom-0'>
