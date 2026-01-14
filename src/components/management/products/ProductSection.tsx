@@ -34,6 +34,7 @@ export function ProductSection() {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "market-id": localStorage.getItem("market-id")!,
       },
       body: JSON.stringify({ [field]: value }),
     });
@@ -52,6 +53,9 @@ export function ProductSection() {
   async function deleteProduct(id: string) {
     const response = await fetch(`/api/products/${id}`, {
       method: "DELETE",
+      headers: {
+        "market-id": localStorage.getItem("market-id")!,
+      },
     });
     const { message } = await response.json();
     if (message === RequestStatus.SUCCESS) {
@@ -60,41 +64,51 @@ export function ProductSection() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className='flex flex-col h-screen'>
       {/* HEADER */}
-      <SectionHeader title="Productos" />
+      <SectionHeader title='Productos' />
 
       {/* ADD PRODUCT */}
       <AddProductActionable onAdd={addProduct} />
 
       {/* LIST */}
-      <div className="flex-1 overflow-y-auto max-h-[65vh] p-2">
+      <div className='flex-1 overflow-y-auto max-h-[65vh] p-4 space-y-3 bg-neutral-50'>
         {products.map((p) => (
           <div
             key={p.id}
-            className="flex items-center gap-2 px-4 py-3 border-b"
+            className='group bg-white rounded-xl border border-neutral-200 px-4 py-3 shadow-sm'
           >
+            {/* Product name */}
             <input
               defaultValue={p.name}
               onBlur={(e) => updateProduct(p.id, "name", e.target.value)}
-              className="flex-1 text-base"
+              className='w-full text-base font-semibold text-neutral-900 bg-neutral-100 rounded-lg px-3 py-2 outline-none focus:bg-white focus:ring-2 focus:ring-primary-200'
             />
 
-            <input
-              defaultValue={p.price}
-              inputMode="numeric"
-              onBlur={(e) =>
-                updateProduct(p.id, "price", Number(e.target.value))
-              }
-              className="w-20 text-right"
-            />
+            {/* Bottom row */}
+            <div className='mt-3 flex items-center justify-between'>
+              {/* Price */}
+              <div className='flex items-center gap-1 bg-neutral-100 rounded-lg px-3 py-2'>
+                <span className='text-sm font-medium text-neutral-500'>$</span>
+                <input
+                  defaultValue={p.price}
+                  inputMode='decimal'
+                  onBlur={(e) =>
+                    updateProduct(p.id, "price", Number(e.target.value))
+                  }
+                  className='w-24 text-right text-sm font-semibold text-neutral-800 bg-transparent outline-none'
+                />
+              </div>
 
-            <button
-              onClick={() => deleteProduct(p.id)}
-              className="text-gray-400 text-xl px-2"
-            >
-              <X className="text-red-500" />
-            </button>
+              {/* Delete */}
+              <button
+                onClick={() => deleteProduct(p.id)}
+                className='p-2 rounded-full active:bg-red-50 bg-red-50'
+                aria-label='Delete product'
+              >
+                <X className='w-5 h-5 text-red-500' />
+              </button>
+            </div>
           </div>
         ))}
       </div>
