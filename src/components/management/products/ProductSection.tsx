@@ -27,7 +27,7 @@ export function ProductSection() {
   async function updateProduct(
     id: number,
     field: "name" | "price",
-    value: string
+    value: string | number
   ) {
     const response = await fetch(`/api/products/${id}`, {
       method: "PUT",
@@ -82,7 +82,9 @@ export function ProductSection() {
             <input
               defaultValue={p.price}
               inputMode="numeric"
-              onBlur={(e) => updateProduct(p.id, "price", e.target.value)}
+              onBlur={(e) =>
+                updateProduct(p.id, "price", Number(e.target.value))
+              }
               className="w-20 text-right"
             />
 
