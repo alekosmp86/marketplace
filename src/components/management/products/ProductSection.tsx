@@ -25,7 +25,7 @@ export function ProductSection() {
   }
 
   async function updateProduct(
-    id: number,
+    id: string,
     field: "name" | "price",
     value: string | number
   ) {
@@ -48,7 +48,7 @@ export function ProductSection() {
     }
   }
 
-  async function deleteProduct(id: number) {
+  async function deleteProduct(id: string) {
     const response = await fetch(`/api/products/${id}`, {
       method: "DELETE",
     });
@@ -67,7 +67,7 @@ export function ProductSection() {
       <AddProductActionable onAdd={addProduct} />
 
       {/* LIST */}
-      <div className="flex-1 overflow-y-auto p-2">
+      <div className="flex-1 overflow-y-auto max-h-[65vh] p-2">
         {products.map((p) => (
           <div
             key={p.id}

@@ -16,3 +16,17 @@ export const PUT = async (
     return Response.json({ message: RequestStatus.ERROR }, { status: 500 });
   }
 };
+
+export const DELETE = async (
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) => {
+  try {
+    const { id } = await params;
+    await ProductService.deleteProduct(id);
+    return Response.json({ message: RequestStatus.SUCCESS }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return Response.json({ message: RequestStatus.ERROR }, { status: 500 });
+  }
+};

@@ -26,4 +26,10 @@ export class ProductService {
       data: { name, price },
     });
   }
+
+  static async deleteProduct(id: string) {
+    await prisma.product.delete({
+      where: { id },
+    });
+  }
 }
