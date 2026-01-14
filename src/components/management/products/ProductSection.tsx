@@ -64,7 +64,7 @@ export function ProductSection() {
   }
 
   return (
-    <div className='flex flex-col h-screen'>
+    <div className='flex flex-col h-screen bg-neutral-100'>
       {/* HEADER */}
       <SectionHeader title='Productos' />
 

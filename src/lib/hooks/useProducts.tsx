@@ -30,7 +30,7 @@ export function useProducts() {
   }
 
   useEffect(() => {
-    localStorage.setItem("market-id", "cmkeciuke0000fwwngi8v4hrh");
+    localStorage.setItem("market-id", "cmkegvj6q0000i79jl9vpqoit");
     fetchProducts();
   }, []);
 
