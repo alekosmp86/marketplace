@@ -4,7 +4,7 @@ import { useState } from "react";
 type AddProductModalProps = {
   open: boolean;
   onClose: () => void;
-  onSubmit: (product: Omit<Product, "id">) => void;
+  onSubmit: (product: Product) => void;
 };
 
 export default function AddProductModal({
@@ -19,8 +19,13 @@ export default function AddProductModal({
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (price === 0) return;
 
-    const newProduct: Omit<Product, "id"> = { name, price };
+    const newProduct: Product = {
+      id: crypto.randomUUID(),
+      name,
+      price,
+    };
     onSubmit(newProduct);
 
     // reset
@@ -34,9 +39,7 @@ export default function AddProductModal({
       <div className="w-full max-w-sm rounded-md bg-white shadow-lg">
         {/* Header */}
         <div className="border-b px-4 py-3 rounded-t-md bg-primary-600">
-          <h2 className="text-white font-semibold">
-            Agregar Producto
-          </h2>
+          <h2 className="text-white font-semibold">Agregar Producto</h2>
         </div>
 
         {/* Form */}

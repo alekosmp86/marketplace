@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { SalesProductRow } from "./SalesProductRow";
+import { useEffect, useState } from "react";
 import { Banknote } from "lucide-react";
-import { useProducts } from "../../lib/hooks/useProducts";
 import { SaleItem } from "@/app/api/(business)/sales/models/SaleItem";
 import { RequestStatus } from "@/app/api/types/RequestStatus";
 import { Header } from "../header/Header";
@@ -11,16 +9,17 @@ import ProductSearch from "./products/ProductSearch";
 import ProductList from "./products/ProductList";
 import PaymentMethodSelector from "./PaymentMethodSelector";
 import { PaymentMethod } from "@/src/types/PaymentMethods";
+import { loadProductsFromDB, saveProducts } from "@/src/lib/indexedDB/product";
+import { Product } from "@/app/api/(business)/products/models/Product";
+import { OfflineProduct } from "@/src/types/OfflineProduct";
 
 export function SalesScreen() {
   const [total, setTotal] = useState(0);
-  const [items, setItems] = useState<SaleItem[]>([]);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(PaymentMethod.CASH);
-
-  const handleAddItem = (item: SaleItem) => {
-    setItems((prev) => [...prev, item]);
-    setTotal((prev) => prev + item.subtotal);
-  };
+  const [products, setProducts] = useState<Product[] | OfflineProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
+    PaymentMethod.CASH
+  );
 
   const handleSale = async () => {
     const response = await fetch("/api/sales", {
@@ -29,13 +28,12 @@ export function SalesScreen() {
         "Content-Type": "application/json",
         "market-id": localStorage.getItem("market-id")!,
       },
-      body: JSON.stringify({ items }),
+      body: JSON.stringify(products),
     });
     const { message } = await response.json();
 
     if (message === RequestStatus.SUCCESS) {
       setTotal(0);
-      setItems([]);
     }
   };
 
@@ -43,7 +41,7 @@ export function SalesScreen() {
     <div className="flex flex-col h-screen bg-neutral-50">
       <Header />
       {/* TOTAL (fixed) */}
-      <div className="shrink-0 px-4 py-3 border-b border-neutral-200">
+      <div className="shrink-0 px-4 py-3 border-b border-neutral-200 bg-neutral-100">
         <span className="text-xs text-neutral-500">TOTAL</span>
         <div className="text-2xl font-bold text-primary-700">$ {total}</div>
       </div>
