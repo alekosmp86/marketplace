@@ -1,10 +1,18 @@
 "use client";
 
+import { getPendingSales, syncSales } from "@/src/lib/indexedDB";
 import { Wifi, WifiOff } from "lucide-react";
 import { useEffect, useState } from "react";
 
-export default function ConnectivityIndicator() {
+export default function ConnectivityHandler() {
   const [offline, setOffline] = useState(false);
+
+  const syncPendingSales = async () => {
+    const sales = await getPendingSales();
+    if (sales.length > 0) {
+      await syncSales(sales);
+    }
+  };
 
   useEffect(() => {
     setOffline(!navigator.onLine);
@@ -13,10 +21,12 @@ export default function ConnectivityIndicator() {
 
     window.addEventListener("online", onOnline);
     window.addEventListener("offline", onOffline);
+    window.addEventListener("online", syncPendingSales);
 
     return () => {
       window.removeEventListener("online", onOnline);
       window.removeEventListener("offline", onOffline);
+      window.removeEventListener("online", syncPendingSales);
     };
   }, []);
 

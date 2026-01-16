@@ -86,7 +86,7 @@ export default function SalesScreen() {
 
       {/* ACTIONS (fixed bottom) */}
       <div className="shrink-0 flex w-full gap-2 p-3 bg-neutral-100 border-t border-neutral-200">
-        <button className="flex-1 py-3 border border-neutral-300 rounded-lg text-sm font-semibold bg-white active:bg-neutral-200">
+        <button className="flex-1 py-3 border border-neutral-300 rounded-lg text-sm font-semibold bg-accent-500 text-white active:bg-neutral-200">
           VENTA RAPIDA
         </button>
 

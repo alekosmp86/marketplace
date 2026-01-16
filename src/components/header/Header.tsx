@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import HeaderNavItemMobile from "./HeaderNavItemMobile";
 import { usePathname } from "next/navigation";
 import { DateUtils } from "@/src/lib/utils/date";
-import ConnectivityIndicator from "../shared/ConnectivityIndicator";
+import ConnectivityHandler from "../shared/ConnectivityHandler";
 
 const HeaderItems = [
   { id: 1, label: "Punto de venta", url: "/", icon: Home },
@@ -44,7 +44,7 @@ export function Header() {
 
       <span className="text-xs font-medium text-primary-50 flex items-center gap-2">
         {time}
-        <ConnectivityIndicator />
+        <ConnectivityHandler />
       </span>
 
       {/* Mobile menu */}
