@@ -1,6 +1,6 @@
 import { OfflineProduct } from "@/src/types/OfflineProduct";
 
 export interface SalesItem {
-    product: OfflineProduct;
-    subtotal: number;
+  product: OfflineProduct;
+  subtotal: number;
 }

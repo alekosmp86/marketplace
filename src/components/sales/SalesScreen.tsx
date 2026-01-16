@@ -9,6 +9,9 @@ import ProductList from "./products/ProductList";
 import PaymentMethodSelector from "./PaymentMethodSelector";
 import { PaymentMethod } from "@/src/types/PaymentMethods";
 import { SalesItem } from "@/app/api/(business)/sales/models/SalesItem";
+import { OfflineSale } from "@/src/types/OfflineSale";
+import { DateUtils } from "@/src/lib/utils/date";
+import { saveSale } from "@/src/lib/indexedDB/sale";
 
 export default function SalesScreen() {
   const [total, setTotal] = useState(0);
@@ -30,7 +33,20 @@ export default function SalesScreen() {
   };
 
   const handleSale = async () => {
-    const response = await fetch("/api/sales", {
+    const sale: OfflineSale = {
+      id: crypto.randomUUID(),
+      marketId: localStorage.getItem("market-id")!,
+      items: itemsInSale,
+      total,
+      paymentMethod,
+      date: new DateUtils().now().date,
+      pendingSync: true,
+    };
+
+    await saveSale(sale);
+    setTotal(0);
+    setItemsInSale([]);
+    /*const response = await fetch("/api/sales", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +58,7 @@ export default function SalesScreen() {
 
     if (message === RequestStatus.SUCCESS) {
       setTotal(0);
-    }
+    }*/
   };
 
   return (

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import HeaderNavItemMobile from "./HeaderNavItemMobile";
 import { usePathname } from "next/navigation";
 import { DateUtils } from "@/src/lib/utils/date";
+import ConnectivityIndicator from "../shared/ConnectivityIndicator";
 
 const HeaderItems = [
   { id: 1, label: "Punto de venta", url: "/", icon: Home },
@@ -41,7 +42,10 @@ export function Header() {
       </button>
       <span className="text-lg font-bold text-primary-50">My Market</span>
 
-      <span className="text-xs font-medium text-primary-50">{time}</span>
+      <span className="text-xs font-medium text-primary-50 flex items-center gap-2">
+        {time}
+        <ConnectivityIndicator />
+      </span>
 
       {/* Mobile menu */}
       {open && (
