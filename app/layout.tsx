@@ -16,6 +16,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "My Market",
   description: "My Market - Sales and Inventory Management",
+  manifest: "/manifest.json",
+};
+
+export const viewport = {
+  themeColor: "#FFFFFF",
 };
 
 export default function RootLayout({
