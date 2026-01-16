@@ -49,6 +49,11 @@ export default function SalesScreen() {
           onAddProduct={(product) =>
             setItemsInSale((prev) => [...prev, product])
           }
+          onRemoveProduct={(product) =>
+            setItemsInSale((prev) =>
+              prev.filter((item) => item.product.id !== product.product.id)
+            )
+          }
         />
       </div>
 
