@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Banknote } from "lucide-react";
 import { RequestStatus } from "@/app/api/types/RequestStatus";
 import { Header } from "../header/Header";
@@ -19,6 +19,11 @@ export default function SalesScreen() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
     PaymentMethod.CASH
   );
+
+  /** @todo we should set the market-id somewhere else */
+  useEffect(() => {
+    localStorage.setItem("market-id", "a48f38ab-17a2-485d-a460-b2190fbe17bb");
+  }, []);
 
   const handleRemoveProduct = (item: SalesItem) => {
     setTotal((prev) => prev - item.subtotal);

@@ -8,8 +8,8 @@ export const PUT = async (
 ) => {
   try {
     const { id } = await params;
-    const { name, price } = await req.json();
-    await ProductService.updateProduct(id, name, price);
+    const { name } = await req.json();
+    await ProductService.updateProduct(id, name);
     return Response.json({ message: RequestStatus.SUCCESS }, { status: 200 });
   } catch (error) {
     console.error(error);

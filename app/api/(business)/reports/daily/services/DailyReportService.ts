@@ -15,7 +15,6 @@ export class DailyReportService {
       },
       select: {
         productId: true,
-        weight: true,
         subtotal: true,
         product: {
           select: {
@@ -40,7 +39,6 @@ export class DailyReportService {
         };
       }
 
-      productMap[item.productId].totalWeight += item.weight;
       productMap[item.productId].totalAmount += item.subtotal;
     }
 

@@ -26,7 +26,6 @@ model Product {
 
   items SaleItem[]
 
-  @@unique([name, marketId])
   @@index([name, marketId])
 }
 

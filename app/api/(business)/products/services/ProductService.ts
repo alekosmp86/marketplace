@@ -28,6 +28,15 @@ export class ProductService {
     });
   }
 
+  static async createMany(
+    products: { id: string; marketId: string; name: string }[]
+  ) {
+    return await prisma.product.createMany({
+      data: products,
+      skipDuplicates: true,
+    });
+  }
+
   static async updateProduct(id: string, name: string) {
     const marketId = await ApiUtils.resolveMarketId();
 
