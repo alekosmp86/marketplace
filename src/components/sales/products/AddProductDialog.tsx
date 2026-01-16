@@ -1,10 +1,10 @@
-import { Product } from "@/app/api/(business)/products/models/Product";
+import { SalesItem } from "@/app/api/(business)/sales/models/SalesItem";
 import { useState } from "react";
 
 type AddProductModalProps = {
   open: boolean;
   onClose: () => void;
-  onSubmit: (product: Product) => void;
+  onSubmit: (product: SalesItem) => void;
 };
 
 export default function AddProductModal({
@@ -13,24 +13,26 @@ export default function AddProductModal({
   onSubmit,
 }: AddProductModalProps) {
   const [name, setName] = useState("");
-  const [price, setPrice] = useState<number>(0);
+  const [subtotal, setSubtotal] = useState<number>(0);
 
   if (!open) return null;
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (price === 0) return;
+    if (subtotal === 0) return;
 
-    const newProduct: Product = {
-      id: crypto.randomUUID(),
-      name,
-      price,
-    };
-    onSubmit(newProduct);
+    onSubmit({
+      product: {
+        id: crypto.randomUUID(),
+        name,
+        pendingSync: true,
+      },
+      subtotal,
+    });
 
     // reset
     setName("");
-    setPrice(0);
+    setSubtotal(0);
     onClose();
   }
 
@@ -61,14 +63,14 @@ export default function AddProductModal({
           {/* Price */}
           <div>
             <label className="block text-xs font-medium text-neutral-500 mb-1">
-              PRECIO (por kg)
+              SUBTOTAL
             </label>
             <input
               type="number"
               step="0.01"
               min="0"
-              value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
+              value={subtotal}
+              onChange={(e) => setSubtotal(Number(e.target.value))}
               required
               className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
             />

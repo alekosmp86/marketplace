@@ -1,63 +1,22 @@
-import { SalesProductRow } from "../SalesProductRow";
+import SalesProductRow from "../SalesProductRow";
 import { Plus } from "lucide-react";
 import AddProductModal from "./AddProductDialog";
-import { useEffect, useState } from "react";
-import { Product } from "@/app/api/(business)/products/models/Product";
+import { useState } from "react";
 import { saveSingleProduct } from "@/src/lib/indexedDB";
-import { OfflineProduct } from "@/src/types/OfflineProduct";
-import { loadProductsFromDB, saveProducts } from "@/src/lib/indexedDB/product";
-import { RequestStatus } from "@/app/api/types/RequestStatus";
+import { SalesItem } from "@/app/api/(business)/sales/models/SalesItem";
 
-export default function ProductList() {
+type ProductListProps = {
+  items: SalesItem[];
+  onAddProduct: (item: SalesItem) => void;
+};
+
+export default function ProductList({ items, onAddProduct }: ProductListProps) {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState<(Product | OfflineProduct)[]>([]);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      setLoading(true);
-
-      try {
-        if (!navigator.onLine) {
-          const products: OfflineProduct[] = await loadProductsFromDB();
-          setProducts(products);
-          setLoading(false);
-          return;
-        }
-
-        const res = await fetch("/api/products", {
-          headers: {
-            "market-id": localStorage.getItem("market-id")!,
-          },
-        });
-        const { message, data }: { message: string; data: Product[] } =
-          await res.json();
-
-        if (message === RequestStatus.SUCCESS) {
-          // Save valid products from server to IndexedDB (as "clean" data, so pendingSync is false or undefined)
-          await saveProducts(data.map((p) => ({ ...p, pendingSync: false })));
-          setProducts(data);
-        } else {
-          console.log(message);
-        }
-      } catch (error) {
-        console.error(
-          "Error loading products, falling back to offline DB:",
-          error
-        );
-        const products: OfflineProduct[] = await loadProductsFromDB();
-        setProducts(products);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProducts();
-  }, []);
-
-  const handleAddProduct = (product: Product) => {
+  const handleAddProduct = (item: SalesItem) => {
     setOpen(false);
-    saveSingleProduct({ ...product, pendingSync: true });
-    setProducts((prev) => [...prev, product]);
+    saveSingleProduct(item.product);
+    onAddProduct(item);
   };
 
   return (
@@ -75,8 +34,8 @@ export default function ProductList() {
           <Plus /> Agregar Producto
         </button>
 
-        {products.map((p) => (
-          <SalesProductRow key={p.id} product={p} />
+        {items.map((item) => (
+          <SalesProductRow key={item.product.id} item={item} />
         ))}
       </div>
     </>

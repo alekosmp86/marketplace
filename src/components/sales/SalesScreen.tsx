@@ -1,22 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Banknote } from "lucide-react";
-import { SaleItem } from "@/app/api/(business)/sales/models/SaleItem";
 import { RequestStatus } from "@/app/api/types/RequestStatus";
 import { Header } from "../header/Header";
 import ProductSearch from "./products/ProductSearch";
 import ProductList from "./products/ProductList";
 import PaymentMethodSelector from "./PaymentMethodSelector";
 import { PaymentMethod } from "@/src/types/PaymentMethods";
-import { loadProductsFromDB, saveProducts } from "@/src/lib/indexedDB/product";
-import { Product } from "@/app/api/(business)/products/models/Product";
-import { OfflineProduct } from "@/src/types/OfflineProduct";
+import { SalesItem } from "@/app/api/(business)/sales/models/SalesItem";
 
-export function SalesScreen() {
+export default function SalesScreen() {
   const [total, setTotal] = useState(0);
-  const [products, setProducts] = useState<Product[] | OfflineProduct[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [itemsInSale, setItemsInSale] = useState<SalesItem[]>([]);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
     PaymentMethod.CASH
   );
@@ -28,7 +24,7 @@ export function SalesScreen() {
         "Content-Type": "application/json",
         "market-id": localStorage.getItem("market-id")!,
       },
-      body: JSON.stringify(products),
+      body: JSON.stringify(itemsInSale),
     });
     const { message } = await response.json();
 
@@ -48,7 +44,12 @@ export function SalesScreen() {
 
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
         <ProductSearch />
-        <ProductList />
+        <ProductList
+          items={itemsInSale}
+          onAddProduct={(product) =>
+            setItemsInSale((prev) => [...prev, product])
+          }
+        />
       </div>
 
       <PaymentMethodSelector
