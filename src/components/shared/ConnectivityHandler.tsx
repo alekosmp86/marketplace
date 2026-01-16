@@ -2,11 +2,9 @@
 
 import { getPendingSales, syncSales } from "@/src/lib/indexedDB";
 import { Wifi, WifiOff } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useNetworkStatus } from "@/src/lib/hooks/useNetworkStatus";
 
 export default function ConnectivityHandler() {
-  const [offline, setOffline] = useState(false);
-
   const syncPendingSales = async () => {
     const sales = await getPendingSales();
     if (sales.length > 0) {
@@ -14,21 +12,7 @@ export default function ConnectivityHandler() {
     }
   };
 
-  useEffect(() => {
-    setOffline(!navigator.onLine);
-    const onOnline = () => setOffline(false);
-    const onOffline = () => setOffline(true);
-
-    window.addEventListener("online", onOnline);
-    window.addEventListener("offline", onOffline);
-    window.addEventListener("online", syncPendingSales);
-
-    return () => {
-      window.removeEventListener("online", onOnline);
-      window.removeEventListener("offline", onOffline);
-      window.removeEventListener("online", syncPendingSales);
-    };
-  }, []);
+  const {offline} = useNetworkStatus(syncPendingSales);
 
   return (
     <div

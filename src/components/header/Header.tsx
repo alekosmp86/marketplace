@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgeDollarSign, Home, LayoutDashboard, Menu, X } from "lucide-react";
+import { BadgeDollarSign, Home, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import HeaderNavItemMobile from "./HeaderNavItemMobile";
 import { usePathname } from "next/navigation";
@@ -9,8 +9,7 @@ import ConnectivityHandler from "../shared/ConnectivityHandler";
 
 const HeaderItems = [
   { id: 1, label: "Punto de venta", url: "/", icon: Home },
-  { id: 2, label: "Resumen", url: "/reports/daily", icon: BadgeDollarSign },
-  { id: 3, label: "Gestión", url: "/management", icon: LayoutDashboard },
+  { id: 2, label: "Resumen", url: "/reports/daily", icon: BadgeDollarSign }
 ];
 
 export function Header() {

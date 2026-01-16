@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Banknote } from "lucide-react";
-import { RequestStatus } from "@/app/api/types/RequestStatus";
 import { Header } from "../header/Header";
 import ProductSearch from "./products/ProductSearch";
 import ProductList from "./products/ProductList";
@@ -12,6 +11,7 @@ import { SalesItem } from "@/app/api/(business)/sales/models/SalesItem";
 import { OfflineSale } from "@/src/types/OfflineSale";
 import { DateUtils } from "@/src/lib/utils/date";
 import { saveSale } from "@/src/lib/indexedDB/sale";
+import SyncButton from "./SyncButton";
 
 export default function SalesScreen() {
   const [total, setTotal] = useState(0);
@@ -19,6 +19,7 @@ export default function SalesScreen() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
     PaymentMethod.CASH
   );
+  const [pendingSyncTrigger, setPendingSyncTrigger] = useState(0);
 
   /** @todo we should set the market-id somewhere else */
   useEffect(() => {
@@ -51,19 +52,7 @@ export default function SalesScreen() {
     await saveSale(sale);
     setTotal(0);
     setItemsInSale([]);
-    /*const response = await fetch("/api/sales", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "market-id": localStorage.getItem("market-id")!,
-      },
-      body: JSON.stringify(itemsInSale),
-    });
-    const { message } = await response.json();
-
-    if (message === RequestStatus.SUCCESS) {
-      setTotal(0);
-    }*/
+    setPendingSyncTrigger((prev) => prev + 1);
   };
 
   return (
@@ -71,8 +60,16 @@ export default function SalesScreen() {
       <Header />
       {/* TOTAL (fixed) */}
       <div className="shrink-0 px-4 py-3 border-b border-neutral-200 bg-neutral-100">
-        <span className="text-xs text-neutral-500">TOTAL</span>
-        <div className="text-2xl font-bold text-primary-700">$ {total}</div>
+        <div className="flex items-end justify-between">
+          {/* TOTAL */}
+          <div>
+            <span className="text-xs text-neutral-500">TOTAL</span>
+            <div className="text-2xl font-bold text-primary-700">$ {total}</div>
+          </div>
+
+          {/* Sync button */}
+          <SyncButton pendingSyncTrigger={pendingSyncTrigger} />
+        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">

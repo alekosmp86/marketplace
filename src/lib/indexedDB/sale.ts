@@ -73,7 +73,7 @@ export async function syncSales(sales: OfflineSale[]) {
             console.log("Cleanup transaction complete");
             resolve();
           };
-          tx.onerror = (e) => {
+          tx.onerror = () => {
             console.error("Cleanup transaction error:", tx.error);
             reject(tx.error);
           };

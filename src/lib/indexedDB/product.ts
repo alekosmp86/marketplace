@@ -53,20 +53,3 @@ export function saveProducts(products: OfflineProduct[]): Promise<void> {
     });
   });
 }
-
-export async function getProductById(id: string) {
-  const db = await openDB();
-
-  return new Promise<any | null>((resolve, reject) => {
-    const tx = db.transaction("products", "readonly");
-    const store = tx.objectStore("products");
-
-    const request = store.get(id);
-
-    request.onsuccess = () => {
-      resolve(request.result ?? null);
-    };
-
-    request.onerror = () => reject(request.error);
-  });
-}
