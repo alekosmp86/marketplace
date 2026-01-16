@@ -67,16 +67,11 @@ export default function DailyReportSection() {
               {reportData.products.map((p) => (
                 <div
                   key={p.productId}
-                  className='grid grid-cols-[2fr_1fr_1fr] gap-3 px-4 py-3 text-sm'
+                  className='grid grid-cols-[2fr_1fr] gap-3 px-4 py-3 text-sm'
                 >
                   {/* Product */}
                   <span className='font-medium text-neutral-900 truncate'>
                     {p.name}
-                  </span>
-
-                  {/* Weight */}
-                  <span className='text-right text-neutral-600'>
-                    {p.totalWeight.toFixed(2)} kg
                   </span>
 
                   {/* Amount */}

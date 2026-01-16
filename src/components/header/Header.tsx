@@ -1,15 +1,15 @@
 "use client";
 
-import { BadgeDollarSign, Home, LayoutDashboard, Menu, X } from "lucide-react";
+import { BadgeDollarSign, Home, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import HeaderNavItemMobile from "./HeaderNavItemMobile";
 import { usePathname } from "next/navigation";
 import { DateUtils } from "@/src/lib/utils/date";
+import ConnectivityHandler from "../shared/ConnectivityHandler";
 
 const HeaderItems = [
   { id: 1, label: "Punto de venta", url: "/", icon: Home },
-  { id: 2, label: "Resumen", url: "/reports/daily", icon: BadgeDollarSign },
-  { id: 3, label: "Gestión", url: "/management", icon: LayoutDashboard },
+  { id: 2, label: "Resumen", url: "/reports/daily", icon: BadgeDollarSign }
 ];
 
 export function Header() {
@@ -41,7 +41,10 @@ export function Header() {
       </button>
       <span className="text-lg font-bold text-primary-50">My Market</span>
 
-      <span className="text-xs font-medium text-primary-50">{time}</span>
+      <span className="text-xs font-medium text-primary-50 flex items-center gap-2">
+        {time}
+        <ConnectivityHandler />
+      </span>
 
       {/* Mobile menu */}
       {open && (

@@ -1,12 +1,12 @@
 import { SalesService } from "./services/SalesService";
-import { SaleItem } from "./models/SaleItem";
 import { RequestStatus } from "../../types/RequestStatus";
+import { OfflineSale } from "@/src/types/OfflineSale";
 
 export const POST = async (req: Request) => {
   try {
-    const { items }: { items: SaleItem[] } = await req.json();
-    await SalesService.createSale(items);
-    return Response.json({ message: RequestStatus.SUCCESS }, { status: 200 });
+    const sales: OfflineSale[] = await req.json();
+    const syncedSalesIds = await SalesService.synchronizeSales(sales);
+    return Response.json({ message: RequestStatus.SUCCESS, data: syncedSalesIds }, { status: 200 });
   } catch (error) {
     console.error(error);
     return Response.json({ message: RequestStatus.ERROR }, { status: 500 });

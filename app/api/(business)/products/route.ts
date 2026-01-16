@@ -17,8 +17,8 @@ export const GET = async () => {
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { name, price } = await req.json();
-    const product = await ProductService.addProduct(name, price);
+    const { name } = await req.json();
+    const product = await ProductService.addProduct(name);
     return Response.json(
       { message: RequestStatus.SUCCESS, data: product },
       { status: 200 }

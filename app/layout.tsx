@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/src/components/header/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,6 +15,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "My Market",
   description: "My Market - Sales and Inventory Management",
+  manifest: "/manifest.json",
+};
+
+export const viewport = {
+  themeColor: "#FFFFFF",
 };
 
 export default function RootLayout({
@@ -28,7 +32,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-      <Header />
         {children}
       </body>
     </html>

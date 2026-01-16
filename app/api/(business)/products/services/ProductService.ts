@@ -17,24 +17,32 @@ export class ProductService {
     });
   }
 
-  static async addProduct(name: string, price: number) {
+  static async addProduct(name: string) {
     const marketId = await ApiUtils.resolveMarketId();
 
     return await prisma.product.create({
       data: {
         name,
-        price,
         marketId,
       },
     });
   }
 
-  static async updateProduct(id: string, name: string, price: number) {
+  static async createMany(
+    products: { id: string; marketId: string; name: string }[]
+  ) {
+    return await prisma.product.createMany({
+      data: products,
+      skipDuplicates: true,
+    });
+  }
+
+  static async updateProduct(id: string, name: string) {
     const marketId = await ApiUtils.resolveMarketId();
 
     await prisma.product.update({
       where: { id, marketId },
-      data: { name, price },
+      data: { name },
     });
   }
 

@@ -1,28 +1,60 @@
+import { OfflineSale } from "@/src/types/OfflineSale";
 import { prisma } from "@/src/lib/prisma";
-import { DateUtils } from "@/src/lib/utils/date";
-import { SaleItem } from "../models/SaleItem";
-import { ApiUtils } from "@/app/api/utils/ApiUtils";
 
 export class SalesService {
-  static async createSale(data: SaleItem[]) {
-    const marketId = await ApiUtils.resolveMarketId();
-    const businessDate = new DateUtils().now();
+  static async synchronizeSales(sales: OfflineSale[]) {
+    const saleIds = sales.map((s) => s.id);
 
-    await prisma.sale.create({
-      data: {
-        marketId,
-        total: data.reduce((acc, item) => acc + item.subtotal, 0),
-        items: {
-          create: data.map((item) => ({
-            marketId,
-            productId: item.productId,
-            weight: item.weight,
-            price: item.price,
-            subtotal: item.subtotal,
-          })),
-        },
-        createdAt: businessDate.date,
-      },
+    // Check for existing sales
+    const existingSales = await prisma.sale.findMany({
+      where: { id: { in: saleIds } },
+      select: { id: true },
     });
+
+    const existingIds = new Set(existingSales.map((s) => s.id));
+    const newSales = sales.filter((s) => !existingIds.has(s.id));
+
+    const syncedSalesIds: string[] = [...existingIds];
+
+    if (newSales.length > 0) {
+      await prisma.$transaction(async (tx) => {
+        for (const sale of newSales) {
+          const { id, date, marketId, total, items } = sale;
+
+          // Create the sale
+          await tx.sale.create({
+            data: {
+              id,
+              total,
+              createdAt: date,
+              marketId,
+            },
+          });
+
+          await tx.product.createMany({
+            data: items.map((item) => ({
+              id: item.product.id,
+              name: item.product.name,
+              marketId,
+            })),
+            skipDuplicates: true,
+          });
+
+          // Create sale items (bulk insert)
+          await tx.saleItem.createMany({
+            data: items.map((item) => ({
+              saleId: id,
+              marketId,
+              productId: item.product.id,
+              subtotal: item.subtotal,
+            })),
+          });
+
+          syncedSalesIds.push(id);
+        }
+      });
+    }
+
+    return syncedSalesIds;
   }
 }

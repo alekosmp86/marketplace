@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "npm run register-market && next build",
+    "dev": "next dev --webpack",
+    "build": "npm run register-market && next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "register-market": "tsx src/tasks/RegisterMarket.tsx"
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^10.2.9",
     "@prisma/client": "^6.19.2",
     "lucide-react": "^0.562.0",
     "next": "16.1.1",

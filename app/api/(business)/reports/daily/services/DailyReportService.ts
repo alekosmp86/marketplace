@@ -15,7 +15,6 @@ export class DailyReportService {
       },
       select: {
         productId: true,
-        weight: true,
         subtotal: true,
         product: {
           select: {
@@ -35,18 +34,15 @@ export class DailyReportService {
         productMap[item.productId] = {
           productId: item.productId,
           name: item.product.name,
-          totalWeight: 0,
           totalAmount: 0,
         };
       }
 
-      productMap[item.productId].totalWeight += item.weight;
       productMap[item.productId].totalAmount += item.subtotal;
     }
 
     const products = Object.values(productMap).map((p) => ({
       ...p,
-      totalWeight: Math.round(p.totalWeight * 100) / 100,
       totalAmount: Math.round(p.totalAmount * 100) / 100,
     }));
 
