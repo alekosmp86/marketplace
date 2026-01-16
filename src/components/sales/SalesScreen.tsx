@@ -17,6 +17,18 @@ export default function SalesScreen() {
     PaymentMethod.CASH
   );
 
+  const handleRemoveProduct = (item: SalesItem) => {
+    setTotal((prev) => prev - item.subtotal);
+    setItemsInSale((prev) =>
+      prev.filter((i) => i.product.id !== item.product.id)
+    );
+  };
+
+  const handleAddProduct = (product: SalesItem) => {
+    setTotal((prev) => prev + product.subtotal);
+    setItemsInSale((prev) => [...prev, product]);
+  };
+
   const handleSale = async () => {
     const response = await fetch("/api/sales", {
       method: "POST",
@@ -46,14 +58,8 @@ export default function SalesScreen() {
         <ProductSearch />
         <ProductList
           items={itemsInSale}
-          onAddProduct={(product) =>
-            setItemsInSale((prev) => [...prev, product])
-          }
-          onRemoveProduct={(product) =>
-            setItemsInSale((prev) =>
-              prev.filter((item) => item.product.id !== product.product.id)
-            )
-          }
+          onAddProduct={handleAddProduct}
+          onRemoveProduct={handleRemoveProduct}
         />
       </div>
 
